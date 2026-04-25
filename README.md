@@ -129,6 +129,7 @@ snipvault/
 │   │   └── supabase.js          # Supabase client init
 │   │
 │   ├── 📁 pages/                # Route-level page components
+│   │   ├── AiToolsPage.jsx      # AI assistant + paste-to-explain tools
 │   │   ├── CreatePage.jsx       # Snippet creation form
 │   │   ├── HomePage.jsx         # Live feed sorted by upvotes
 │   │   ├── ExplorePage.jsx      # Full vault with search

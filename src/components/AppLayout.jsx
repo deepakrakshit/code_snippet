@@ -48,6 +48,18 @@ function AppLayout() {
               Explore
             </NavLink>
             <NavLink
+              to="/ai"
+              className={({ isActive }) =>
+                `hidden rounded-lg px-3 py-2 text-sm font-semibold transition sm:inline-flex ${
+                  isActive
+                    ? 'bg-vault-panel-2 text-vault-text'
+                    : 'text-vault-muted hover:bg-vault-panel hover:text-vault-text'
+                }`
+              }
+            >
+              AI
+            </NavLink>
+            <NavLink
               to="/create"
               className="sheen inline-flex h-10 items-center gap-2 rounded-lg bg-vault-green px-4 text-sm font-bold text-[#001b0e] shadow-[0_14px_34px_rgba(0,255,136,0.18)] transition hover:-translate-y-0.5 hover:bg-[#35ffa0] hover:shadow-[0_18px_42px_rgba(0,255,136,0.24)] focus:outline-none focus:ring-4 focus:ring-vault-green/20"
             >

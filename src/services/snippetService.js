@@ -7,6 +7,60 @@ let localFallbackEnabled =
   !isSupabaseConfigured ||
   sessionStorage.getItem(LOCAL_FALLBACK_KEY) === 'true'
 
+const seedSnippets = [
+  {
+    id: 'demo-react-copy-hook',
+    title: 'Clipboard Hook With Timeout',
+    language: 'javascript',
+    code: `import { useCallback, useState } from 'react'
+
+export function useClipboard(timeout = 1200) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = useCallback(async (value) => {
+    await navigator.clipboard.writeText(value)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), timeout)
+  }, [timeout])
+
+  return { copied, copy }
+}`,
+    upvotes: 42,
+    createdAt: '2026-04-18T10:30:00.000Z',
+  },
+  {
+    id: 'demo-sql-top-snippets',
+    title: 'Top Snippets Query',
+    language: 'sql',
+    code: `select
+  id,
+  title,
+  language,
+  upvotes,
+  "createdAt"
+from public.snippets
+order by upvotes desc, "createdAt" desc
+limit 20;`,
+    upvotes: 31,
+    createdAt: '2026-04-16T14:05:00.000Z',
+  },
+  {
+    id: 'demo-python-slugify',
+    title: 'Tiny Python Slugify',
+    language: 'python',
+    code: `import re
+
+def slugify(value: str) -> str:
+    value = value.strip().lower()
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    return value.strip("-")
+
+print(slugify("SnipVault Launch Day"))`,
+    upvotes: 24,
+    createdAt: '2026-04-12T09:45:00.000Z',
+  },
+]
+
 function createSnippetId() {
   if (crypto.randomUUID) {
     return crypto.randomUUID()
@@ -42,16 +96,16 @@ function readLocalSnippets() {
   const stored = localStorage.getItem(LOCAL_SNIPPETS_KEY)
 
   if (!stored) {
-    localStorage.setItem(LOCAL_SNIPPETS_KEY, '[]')
-    return []
+    localStorage.setItem(LOCAL_SNIPPETS_KEY, JSON.stringify(seedSnippets))
+    return seedSnippets
   }
 
   try {
     const parsed = JSON.parse(stored)
-    return Array.isArray(parsed) ? parsed : []
+    return Array.isArray(parsed) && parsed.length ? parsed : seedSnippets
   } catch {
-    localStorage.setItem(LOCAL_SNIPPETS_KEY, '[]')
-    return []
+    localStorage.setItem(LOCAL_SNIPPETS_KEY, JSON.stringify(seedSnippets))
+    return seedSnippets
   }
 }
 
@@ -67,6 +121,10 @@ function shouldUseLocalStore() {
 function activateLocalFallback() {
   localFallbackEnabled = true
   sessionStorage.setItem(LOCAL_FALLBACK_KEY, 'true')
+}
+
+function findSeedSnippet(snippetId) {
+  return seedSnippets.find((snippet) => snippet.id === snippetId)
 }
 
 export async function fetchSnippets() {
@@ -85,7 +143,9 @@ export async function fetchSnippets() {
       throw error
     }
 
-    return data.map(normalizeSnippet)
+    return data.length
+      ? data.map(normalizeSnippet)
+      : sortSnippetsByTop(seedSnippets.map(normalizeSnippet))
   } catch {
     activateLocalFallback()
     return sortSnippetsByTop(readLocalSnippets().map(normalizeSnippet))
@@ -107,7 +167,9 @@ export async function fetchAllSnippets() {
       throw error
     }
 
-    return data.map(normalizeSnippet)
+    return data.length
+      ? data.map(normalizeSnippet)
+      : sortSnippetsByNewest(seedSnippets.map(normalizeSnippet))
   } catch {
     activateLocalFallback()
     return sortSnippetsByNewest(readLocalSnippets().map(normalizeSnippet))
@@ -131,7 +193,8 @@ export async function fetchSnippet(snippetId) {
       throw error
     }
 
-    return data ? normalizeSnippet(data) : null
+    const seedSnippet = findSeedSnippet(snippetId)
+    return data ? normalizeSnippet(data) : seedSnippet ? normalizeSnippet(seedSnippet) : null
   } catch {
     activateLocalFallback()
     const snippet = readLocalSnippets().find((item) => item.id === snippetId)

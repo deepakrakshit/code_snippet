@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import AppLayout from './components/AppLayout'
 
 const CreatePage = lazy(() => import('./pages/CreatePage'))
+const AiToolsPage = lazy(() => import('./pages/AiToolsPage'))
 const ExplorePage = lazy(() => import('./pages/ExplorePage'))
 const HomePage = lazy(() => import('./pages/HomePage'))
 const SnippetPage = lazy(() => import('./pages/SnippetPage'))
@@ -26,6 +27,7 @@ function App() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={suspended(<HomePage />)} />
+        <Route path="ai" element={suspended(<AiToolsPage />)} />
         <Route path="vault" element={suspended(<ExplorePage />)} />
         <Route path="create" element={suspended(<CreatePage />)} />
         <Route path="snippet/:id" element={suspended(<SnippetPage />)} />
