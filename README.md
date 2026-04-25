@@ -67,6 +67,9 @@ Think **GitHub Gist** met **Product Hunt** and they had a fast, beautiful baby.
 │                                                                   │
 │   ⚡  REALTIME FEED       Snippets update live via Supabase      │
 │   🎨  SYNTAX HIGHLIGHT    100+ languages with Prism.js           │
+│   🤖  AI CODE EXPLAIN     Summary + complexity + suggestions      │
+│   🖥️  LIVE PREVIEW        HTML/CSS/JS rendered instantly          │
+│   📸  EXPORT IMAGE        Download styled snippet cards as PNG    │
 │   👍  UPVOTE SYSTEM       Spam-protected. One vote per snippet.  │
 │   🔗  INSTANT SHARING     Unique URL generated on every submit   │
 │   📋  COPY TO CLIPBOARD   One click. Done.                       │
@@ -129,10 +132,12 @@ snipvault/
 │   │   └── SnippetPage.jsx      # Full snippet + upvote view
 │   │
 │   ├── 📁 services/
+│   │   ├── aiExplainService.js  # AI explain API integration
 │   │   └── snippetService.js    # All DB queries in one place
 │   │
 │   ├── 📁 utils/
 │   │   ├── format.js            # Date, string helpers
+│   │   ├── livePreview.js       # iframe preview document builder
 │   │   └── votes.js             # Vote tracking logic
 │   │
 │   ├── App.jsx                  # Router config
@@ -207,7 +212,11 @@ cp .env.example .env.local
 ```env
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-public-anon-key
+VITE_OPENROUTER_API_KEY=your-openrouter-api-key
+VITE_OPENROUTER_MODEL=openai/gpt-4o-mini
 ```
+
+`VITE_OPENROUTER_API_KEY` is required for AI Code Explain. If it is missing, the app still runs and only the explain action is disabled with a friendly message.
 
 > **No Supabase yet?** Just skip this step. SnipVault runs in **local demo mode** automatically — full UI, no backend needed.
 
@@ -233,7 +242,7 @@ Open the URL Vite prints. You're live. 🚀
 3.  Framework preset  →  Vite
 4.  Build command     →  npm run build
 5.  Output dir        →  dist
-6.  Add env vars      →  VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY
+6.  Add env vars      →  VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY + VITE_OPENROUTER_API_KEY (+ optional VITE_OPENROUTER_MODEL)
 7.  Hit Deploy
 ```
 
