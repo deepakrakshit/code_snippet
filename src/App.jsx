@@ -5,6 +5,8 @@ import AppLayout from './components/AppLayout'
 const CreatePage = lazy(() => import('./pages/CreatePage'))
 const AiToolsPage = lazy(() => import('./pages/AiToolsPage'))
 const ExplorePage = lazy(() => import('./pages/ExplorePage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const FaqPage = lazy(() => import('./pages/FaqPage'))
 const HomePage = lazy(() => import('./pages/HomePage'))
 const SnippetPage = lazy(() => import('./pages/SnippetPage'))
 
@@ -29,6 +31,8 @@ function App() {
         <Route index element={suspended(<HomePage />)} />
         <Route path="ai" element={suspended(<AiToolsPage />)} />
         <Route path="vault" element={suspended(<ExplorePage />)} />
+        <Route path="about" element={suspended(<AboutPage />)} />
+        <Route path="faq" element={suspended(<FaqPage />)} />
         <Route path="create" element={suspended(<CreatePage />)} />
         <Route path="snippet/:id" element={suspended(<SnippetPage />)} />
         <Route path="*" element={<Navigate to="/" replace />} />

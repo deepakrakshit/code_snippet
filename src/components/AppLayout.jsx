@@ -60,6 +60,30 @@ function AppLayout() {
               AI
             </NavLink>
             <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex ${
+                  isActive
+                    ? 'bg-vault-panel-2 text-vault-text'
+                    : 'text-vault-muted hover:bg-vault-panel hover:text-vault-text'
+                }`
+              }
+            >
+              About
+            </NavLink>
+            <NavLink
+              to="/faq"
+              className={({ isActive }) =>
+                `hidden rounded-lg px-3 py-2 text-sm font-semibold transition lg:inline-flex ${
+                  isActive
+                    ? 'bg-vault-panel-2 text-vault-text'
+                    : 'text-vault-muted hover:bg-vault-panel hover:text-vault-text'
+                }`
+              }
+            >
+              FAQ
+            </NavLink>
+            <NavLink
               to="/create"
               className="sheen inline-flex h-10 items-center gap-2 rounded-lg bg-vault-green px-4 text-sm font-bold text-[#001b0e] shadow-[0_14px_34px_rgba(0,255,136,0.18)] transition hover:-translate-y-0.5 hover:bg-[#35ffa0] hover:shadow-[0_18px_42px_rgba(0,255,136,0.24)] focus:outline-none focus:ring-4 focus:ring-vault-green/20"
             >
@@ -74,8 +98,16 @@ function AppLayout() {
         <Outlet />
       </main>
 
-      <footer className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-t border-vault-border/70 px-4 py-6 text-sm text-vault-muted sm:px-6 lg:px-8">
-        <span>SnipVault</span>
+      <footer className="mx-auto flex w-full max-w-6xl flex-col gap-4 border-t border-vault-border/70 px-4 py-6 text-sm text-vault-muted sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div className="flex flex-wrap items-center gap-3">
+          <span>SnipVault</span>
+          <NavLink to="/about" className="transition hover:text-vault-text">
+            About
+          </NavLink>
+          <NavLink to="/faq" className="transition hover:text-vault-text">
+            FAQ
+          </NavLink>
+        </div>
         <span className="inline-flex items-center gap-2">
           <Sparkles size={16} className="text-vault-green" />
           Built for sharp demos
