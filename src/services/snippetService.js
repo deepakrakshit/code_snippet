@@ -11,7 +11,10 @@ function ensureSupabase() {
 }
 
 function toSnippetServiceError(error) {
-  const message = String(error?.message ?? '')
+  const message = String(error?.message ?? '').trim()
+  const details = String(error?.details ?? '').trim()
+  const hint = String(error?.hint ?? '').trim()
+  const code = String(error?.code ?? '').trim()
 
   if (
     message.includes(
@@ -25,6 +28,20 @@ function toSnippetServiceError(error) {
 
   if (error instanceof Error) {
     return error
+  }
+
+  if (
+    message.toLowerCase().includes('row-level security') ||
+    code === '42501'
+  ) {
+    return new Error(
+      'Insert blocked by Supabase RLS policy. Run supabase/schema.sql to create the insert/select policies on public.snippets.',
+    )
+  }
+
+  const parts = [message, details, hint].filter(Boolean)
+  if (parts.length) {
+    return new Error(parts.join(' | '))
   }
 
   return new Error('Unexpected database error while loading snippets.')
