@@ -56,8 +56,11 @@ function createSnippetId() {
 }
 
 function normalizeSnippet(snippet) {
+  const normalizedCreatedAt = snippet.createdAt ?? snippet.created_at ?? null
+
   return {
     ...snippet,
+    createdAt: normalizedCreatedAt,
     upvotes: Number(snippet.upvotes ?? 0),
   }
 }
@@ -123,7 +126,7 @@ export async function createSnippet({ title, language, code }) {
     language,
     code: code.trimEnd(),
     upvotes: 0,
-    createdAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
   }
 
   const { data, error } = await client
