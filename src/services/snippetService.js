@@ -1,65 +1,14 @@
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
-const LOCAL_SNIPPETS_KEY = 'snipvault:snippets'
-const LOCAL_CHANGE_EVENT = 'snipvault-local-change'
-const LOCAL_FALLBACK_KEY = 'snipvault:local-fallback'
-let localFallbackEnabled =
-  !isSupabaseConfigured ||
-  sessionStorage.getItem(LOCAL_FALLBACK_KEY) === 'true'
+function ensureSupabase() {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error(
+      'Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
+    )
+  }
 
-const seedSnippets = [
-  {
-    id: 'demo-react-copy-hook',
-    title: 'Clipboard Hook With Timeout',
-    language: 'javascript',
-    code: `import { useCallback, useState } from 'react'
-
-export function useClipboard(timeout = 1200) {
-  const [copied, setCopied] = useState(false)
-
-  const copy = useCallback(async (value) => {
-    await navigator.clipboard.writeText(value)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), timeout)
-  }, [timeout])
-
-  return { copied, copy }
-}`,
-    upvotes: 42,
-    createdAt: '2026-04-18T10:30:00.000Z',
-  },
-  {
-    id: 'demo-sql-top-snippets',
-    title: 'Top Snippets Query',
-    language: 'sql',
-    code: `select
-  id,
-  title,
-  language,
-  upvotes,
-  "createdAt"
-from public.snippets
-order by upvotes desc, "createdAt" desc
-limit 20;`,
-    upvotes: 31,
-    createdAt: '2026-04-16T14:05:00.000Z',
-  },
-  {
-    id: 'demo-python-slugify',
-    title: 'Tiny Python Slugify',
-    language: 'python',
-    code: `import re
-
-def slugify(value: str) -> str:
-    value = value.strip().lower()
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return value.strip("-")
-
-print(slugify("SnipVault Launch Day"))`,
-    upvotes: 24,
-    createdAt: '2026-04-12T09:45:00.000Z',
-  },
-]
+  return supabase
+}
 
 function createSnippetId() {
   if (crypto.randomUUID) {
@@ -92,117 +41,45 @@ function sortSnippetsByNewest(snippets) {
   )
 }
 
-function readLocalSnippets() {
-  const stored = localStorage.getItem(LOCAL_SNIPPETS_KEY)
-
-  if (!stored) {
-    localStorage.setItem(LOCAL_SNIPPETS_KEY, JSON.stringify(seedSnippets))
-    return seedSnippets
-  }
-
-  try {
-    const parsed = JSON.parse(stored)
-    return Array.isArray(parsed) && parsed.length ? parsed : seedSnippets
-  } catch {
-    localStorage.setItem(LOCAL_SNIPPETS_KEY, JSON.stringify(seedSnippets))
-    return seedSnippets
-  }
-}
-
-function writeLocalSnippets(snippets) {
-  localStorage.setItem(LOCAL_SNIPPETS_KEY, JSON.stringify(snippets))
-  window.dispatchEvent(new CustomEvent(LOCAL_CHANGE_EVENT))
-}
-
-function shouldUseLocalStore() {
-  return localFallbackEnabled || !isSupabaseConfigured
-}
-
-function activateLocalFallback() {
-  localFallbackEnabled = true
-  sessionStorage.setItem(LOCAL_FALLBACK_KEY, 'true')
-}
-
-function findSeedSnippet(snippetId) {
-  return seedSnippets.find((snippet) => snippet.id === snippetId)
-}
-
 export async function fetchSnippets() {
-  if (shouldUseLocalStore()) {
-    return sortSnippetsByTop(readLocalSnippets().map(normalizeSnippet))
+  const client = ensureSupabase()
+  const { data, error } = await client.from('snippets').select('*')
+
+  if (error) {
+    throw error
   }
 
-  try {
-    const { data, error } = await supabase
-      .from('snippets')
-      .select('id,title,language,code,upvotes,createdAt')
-      .order('upvotes', { ascending: false })
-      .order('createdAt', { ascending: false })
-
-    if (error) {
-      throw error
-    }
-
-    return data.length
-      ? data.map(normalizeSnippet)
-      : sortSnippetsByTop(seedSnippets.map(normalizeSnippet))
-  } catch {
-    activateLocalFallback()
-    return sortSnippetsByTop(readLocalSnippets().map(normalizeSnippet))
-  }
+  return sortSnippetsByTop((data ?? []).map(normalizeSnippet))
 }
 
 export async function fetchAllSnippets() {
-  if (shouldUseLocalStore()) {
-    return sortSnippetsByNewest(readLocalSnippets().map(normalizeSnippet))
+  const client = ensureSupabase()
+  const { data, error } = await client.from('snippets').select('*')
+
+  if (error) {
+    throw error
   }
 
-  try {
-    const { data, error } = await supabase
-      .from('snippets')
-      .select('id,title,language,code,upvotes,createdAt')
-      .order('createdAt', { ascending: false })
-
-    if (error) {
-      throw error
-    }
-
-    return data.length
-      ? data.map(normalizeSnippet)
-      : sortSnippetsByNewest(seedSnippets.map(normalizeSnippet))
-  } catch {
-    activateLocalFallback()
-    return sortSnippetsByNewest(readLocalSnippets().map(normalizeSnippet))
-  }
+  return sortSnippetsByNewest((data ?? []).map(normalizeSnippet))
 }
 
 export async function fetchSnippet(snippetId) {
-  if (shouldUseLocalStore()) {
-    const snippet = readLocalSnippets().find((item) => item.id === snippetId)
-    return snippet ? normalizeSnippet(snippet) : null
+  const client = ensureSupabase()
+  const { data, error } = await client
+    .from('snippets')
+    .select('*')
+    .eq('id', snippetId)
+    .maybeSingle()
+
+  if (error) {
+    throw error
   }
 
-  try {
-    const { data, error } = await supabase
-      .from('snippets')
-      .select('id,title,language,code,upvotes,createdAt')
-      .eq('id', snippetId)
-      .maybeSingle()
-
-    if (error) {
-      throw error
-    }
-
-    const seedSnippet = findSeedSnippet(snippetId)
-    return data ? normalizeSnippet(data) : seedSnippet ? normalizeSnippet(seedSnippet) : null
-  } catch {
-    activateLocalFallback()
-    const snippet = readLocalSnippets().find((item) => item.id === snippetId)
-    return snippet ? normalizeSnippet(snippet) : null
-  }
+  return data ? normalizeSnippet(data) : null
 }
 
 export async function createSnippet({ title, language, code }) {
+  const client = ensureSupabase()
   const snippet = {
     id: createSnippetId(),
     title: title.trim(),
@@ -212,77 +89,50 @@ export async function createSnippet({ title, language, code }) {
     createdAt: new Date().toISOString(),
   }
 
-  if (shouldUseLocalStore()) {
-    writeLocalSnippets([snippet, ...readLocalSnippets()])
-    return snippet
+  const { data, error } = await client
+    .from('snippets')
+    .insert(snippet)
+    .select('*')
+    .single()
+
+  if (error) {
+    console.log(error)
+    throw error
   }
 
-  try {
-    const { data, error } = await supabase
-      .from('snippets')
-      .insert(snippet)
-      .select('id,title,language,code,upvotes,createdAt')
-      .single()
-
-    if (error) {
-      throw error
-    }
-
-    return normalizeSnippet(data)
-  } catch {
-    activateLocalFallback()
-    writeLocalSnippets([snippet, ...readLocalSnippets()])
-    return snippet
-  }
+  return normalizeSnippet(data)
 }
 
 export async function upvoteSnippet(snippetId) {
-  if (shouldUseLocalStore()) {
-    const snippets = readLocalSnippets()
-    const updated = snippets.map((snippet) =>
-      snippet.id === snippetId
-        ? { ...snippet, upvotes: Number(snippet.upvotes ?? 0) + 1 }
-        : snippet,
-    )
+  const client = ensureSupabase()
+  const { data: currentSnippet, error: currentError } = await client
+    .from('snippets')
+    .select('upvotes')
+    .eq('id', snippetId)
+    .single()
 
-    writeLocalSnippets(updated)
-    return normalizeSnippet(updated.find((snippet) => snippet.id === snippetId))
+  if (currentError) {
+    throw currentError
   }
 
-  try {
-    const { data, error } = await supabase.rpc('increment_snippet_upvotes', {
-      snippet_id: snippetId,
-    })
+  const nextUpvotes = Number(currentSnippet?.upvotes ?? 0) + 1
+  const { data, error } = await client
+    .from('snippets')
+    .update({ upvotes: nextUpvotes })
+    .eq('id', snippetId)
+    .select('*')
+    .single()
 
-    if (error) {
-      throw error
-    }
-
-    const snippet = Array.isArray(data) ? data[0] : data
-    return normalizeSnippet(snippet)
-  } catch {
-    activateLocalFallback()
-    const snippets = readLocalSnippets()
-    const updated = snippets.map((snippet) =>
-      snippet.id === snippetId
-        ? { ...snippet, upvotes: Number(snippet.upvotes ?? 0) + 1 }
-        : snippet,
-    )
-
-    writeLocalSnippets(updated)
-    return normalizeSnippet(updated.find((snippet) => snippet.id === snippetId))
+  if (error) {
+    throw error
   }
+
+  return normalizeSnippet(data)
 }
 
 export function subscribeToSnippets(onChange) {
-  if (shouldUseLocalStore()) {
-    window.addEventListener(LOCAL_CHANGE_EVENT, onChange)
-    window.addEventListener('storage', onChange)
-
-    return () => {
-      window.removeEventListener(LOCAL_CHANGE_EVENT, onChange)
-      window.removeEventListener('storage', onChange)
-    }
+  if (!isSupabaseConfigured || !supabase) {
+    return () => {}
   }
 
   const channel = supabase
@@ -300,8 +150,8 @@ export function subscribeToSnippets(onChange) {
 }
 
 export function subscribeToSnippet(snippetId, onChange) {
-  if (shouldUseLocalStore()) {
-    return subscribeToSnippets(onChange)
+  if (!isSupabaseConfigured || !supabase) {
+    return () => {}
   }
 
   const channel = supabase

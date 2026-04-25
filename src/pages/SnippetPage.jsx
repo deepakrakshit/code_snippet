@@ -16,7 +16,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -44,9 +43,116 @@ function createExportFileName(title) {
   return normalized || 'snipvault-snippet'
 }
 
+function createExportSurface(snippet) {
+  const languageColor = getLanguageColor(snippet.language)
+  const languageLabel = getLanguageLabel(snippet.language)
+
+  const host = document.createElement('div')
+  host.style.position = 'fixed'
+  host.style.left = '-10000px'
+  host.style.top = '0'
+  host.style.width = '1200px'
+  host.style.padding = '32px'
+  host.style.background = '#0d1117'
+  host.style.color = '#f0f6fc'
+  host.style.fontFamily = 'Inter, system-ui, sans-serif'
+
+  const card = document.createElement('article')
+  card.style.border = '1px solid #30363d'
+  card.style.borderRadius = '16px'
+  card.style.background =
+    'linear-gradient(180deg, rgba(22,27,34,0.98), rgba(13,17,23,0.95))'
+  card.style.padding = '24px'
+  card.style.boxShadow = '0 24px 80px rgba(1,4,9,0.42)'
+
+  const headingRow = document.createElement('div')
+  headingRow.style.display = 'flex'
+  headingRow.style.flexDirection = 'column'
+  headingRow.style.gap = '12px'
+
+  const meta = document.createElement('div')
+  meta.style.display = 'flex'
+  meta.style.gap = '8px'
+  meta.style.alignItems = 'center'
+
+  const languageBadge = document.createElement('span')
+  languageBadge.textContent = languageLabel
+  languageBadge.style.display = 'inline-flex'
+  languageBadge.style.border = `1px solid ${languageColor}`
+  languageBadge.style.color = languageColor
+  languageBadge.style.background = 'rgba(255,255,255,0.03)'
+  languageBadge.style.borderRadius = '8px'
+  languageBadge.style.padding = '4px 10px'
+  languageBadge.style.fontSize = '12px'
+  languageBadge.style.fontWeight = '800'
+
+  const dateBadge = document.createElement('span')
+  dateBadge.textContent = formatDate(snippet.createdAt)
+  dateBadge.style.display = 'inline-flex'
+  dateBadge.style.border = '1px solid #30363d'
+  dateBadge.style.color = '#8b949e'
+  dateBadge.style.borderRadius = '8px'
+  dateBadge.style.padding = '4px 10px'
+  dateBadge.style.fontSize = '12px'
+  dateBadge.style.fontWeight = '700'
+
+  meta.appendChild(languageBadge)
+  meta.appendChild(dateBadge)
+
+  const title = document.createElement('h1')
+  title.textContent = snippet.title
+  title.style.margin = '0'
+  title.style.fontSize = '38px'
+  title.style.lineHeight = '1.2'
+  title.style.fontWeight = '800'
+  title.style.color = '#f0f6fc'
+
+  headingRow.appendChild(meta)
+  headingRow.appendChild(title)
+
+  const code = document.createElement('pre')
+  code.textContent = snippet.code
+  code.style.margin = '18px 0 0'
+  code.style.padding = '18px'
+  code.style.border = '1px solid #30363d'
+  code.style.borderRadius = '12px'
+  code.style.background = '#10151d'
+  code.style.color = '#f0f6fc'
+  code.style.fontSize = '15px'
+  code.style.lineHeight = '1.65'
+  code.style.whiteSpace = 'pre-wrap'
+  code.style.wordBreak = 'break-word'
+  code.style.fontFamily =
+    '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace'
+
+  const footer = document.createElement('div')
+  footer.style.marginTop = '16px'
+  footer.style.display = 'flex'
+  footer.style.justifyContent = 'space-between'
+  footer.style.gap = '14px'
+  footer.style.color = '#8b949e'
+  footer.style.fontSize = '13px'
+  footer.style.fontWeight = '700'
+
+  const lineCount = document.createElement('span')
+  lineCount.textContent = `${snippet.code.split('\n').length} lines`
+
+  const id = document.createElement('span')
+  id.textContent = snippet.id
+
+  footer.appendChild(lineCount)
+  footer.appendChild(id)
+
+  card.appendChild(headingRow)
+  card.appendChild(code)
+  card.appendChild(footer)
+  host.appendChild(card)
+
+  return host
+}
+
 function SnippetPage() {
   const { id } = useParams()
-  const exportCardRef = useRef(null)
   const [snippet, setSnippet] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -147,18 +253,24 @@ function SnippetPage() {
   }
 
   async function handleExportImage() {
-    if (!snippet || !exportCardRef.current || isExporting) {
+    if (!snippet || isExporting) {
       return
     }
+
+    let exportSurface
 
     try {
       setExportError('')
       setIsExporting(true)
 
-      const canvas = await html2canvas(exportCardRef.current, {
+      exportSurface = createExportSurface(snippet)
+      document.body.appendChild(exportSurface)
+
+      const canvas = await html2canvas(exportSurface, {
         backgroundColor: '#0d1117',
         scale: 2,
         useCORS: true,
+        logging: false,
       })
 
       const downloadLink = document.createElement('a')
@@ -170,6 +282,9 @@ function SnippetPage() {
     } catch (nextError) {
       setExportError(nextError.message ?? 'Unable to export snippet image.')
     } finally {
+      if (exportSurface) {
+        exportSurface.remove()
+      }
       setIsExporting(false)
     }
   }
@@ -259,10 +374,7 @@ function SnippetPage() {
         Vault
       </Link>
 
-      <div
-        ref={exportCardRef}
-        className="hero-panel glass-panel rise-in export-capture-surface overflow-hidden rounded-lg"
-      >
+      <div className="hero-panel glass-panel rise-in export-capture-surface overflow-hidden rounded-lg">
         <div className="border-b border-vault-border p-5 sm:p-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0">
@@ -378,7 +490,7 @@ function SnippetPage() {
                   title={`${snippet.title} live preview`}
                   srcDoc={previewDocument}
                   sandbox="allow-scripts"
-                  className="h-[360px] w-full border-0 bg-white"
+                  className="block h-[400px] min-h-[400px] w-full border-0 bg-white"
                 />
               </section>
             ) : null}

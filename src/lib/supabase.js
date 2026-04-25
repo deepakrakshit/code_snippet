@@ -6,7 +6,11 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 function hasUsableSupabaseConfig() {
   try {
     const url = new URL(supabaseUrl)
-    return url.hostname.endsWith('.supabase.co') && supabaseAnonKey?.startsWith('eyJ')
+    return (
+      ['http:', 'https:'].includes(url.protocol) &&
+      url.hostname.endsWith('.supabase.co') &&
+      Boolean(String(supabaseAnonKey ?? '').trim())
+    )
   } catch {
     return false
   }

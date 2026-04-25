@@ -4,15 +4,11 @@ const BASE_STYLE = `
 html,
 body {
   margin: 0;
-  padding: 0;
+  padding: 10px;
   min-height: 100%;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
   background: #0d1117;
-  color: #e6edf3;
-}
-
-body {
-  padding: 14px;
+  color: #f0f6fc;
 }
 
 .preview-shell {
@@ -43,11 +39,7 @@ body {
 }
 `
 
-function hasFullDocument(code) {
-  return /<(html|head|body|!doctype)/i.test(code)
-}
-
-function wrapDoc(body, extraStyle = '') {
+function wrapDoc({ body, extraStyle = '', extraScript = '' }) {
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -55,19 +47,26 @@ function wrapDoc(body, extraStyle = '') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>${BASE_STYLE}${extraStyle}</style>
   </head>
-  <body>${body}</body>
+  <body>
+    ${body}
+    ${extraScript}
+  </body>
 </html>`
+}
+
+function htmlPreviewDoc(code) {
+  return wrapDoc({ body: code })
 }
 
 function javascriptPreviewDoc(code) {
   const escapedCode = code.replace(/<\/script>/gi, '<\\/script>')
 
-  return wrapDoc(
-    `<section class="preview-shell">
+  return wrapDoc({
+    body: `<section class="preview-shell">
   <p class="preview-muted">Live JavaScript output</p>
   <pre id="snipvault-console">Console output appears here.</pre>
-</section>
-<script>
+</section>`,
+    extraScript: `<script>
 const output = document.getElementById('snipvault-console');
 
 function stringifyValue(value) {
@@ -111,19 +110,19 @@ try {
   writeLine('error', [error.message]);
 }
 </script>`,
-  )
+  })
 }
 
 function cssPreviewDoc(code) {
-  return wrapDoc(
-    `<section class="preview-shell">
+  return wrapDoc({
+    body: `<section class="preview-shell">
   <p class="preview-muted">Live CSS output (sample markup)</p>
   <h2>SnipVault Preview</h2>
   <p>The styles below are rendered using your CSS snippet.</p>
-  <button>Preview Button</button>
+  <button type="button">Preview Button</button>
 </section>`,
-    `\n${code}\n`,
-  )
+    extraStyle: `\n${code}\n`,
+  })
 }
 
 export function supportsLivePreview(language) {
@@ -136,11 +135,7 @@ export function buildPreviewDocument({ language, code }) {
   }
 
   if (language === 'html') {
-    if (hasFullDocument(code)) {
-      return code
-    }
-
-    return wrapDoc(code)
+    return htmlPreviewDoc(code)
   }
 
   if (language === 'css') {
