@@ -10,6 +10,26 @@ function ensureSupabase() {
   return supabase
 }
 
+function toSnippetServiceError(error) {
+  const message = String(error?.message ?? '')
+
+  if (
+    message.includes(
+      "Could not find the table 'public.snippets' in the schema cache",
+    )
+  ) {
+    return new Error(
+      'Supabase table public.snippets is missing. Run supabase/schema.sql in the SQL editor for the same project used by VITE_SUPABASE_URL.',
+    )
+  }
+
+  if (error instanceof Error) {
+    return error
+  }
+
+  return new Error('Unexpected database error while loading snippets.')
+}
+
 function createSnippetId() {
   if (crypto.randomUUID) {
     return crypto.randomUUID()
@@ -46,7 +66,7 @@ export async function fetchSnippets() {
   const { data, error } = await client.from('snippets').select('*')
 
   if (error) {
-    throw error
+    throw toSnippetServiceError(error)
   }
 
   return sortSnippetsByTop((data ?? []).map(normalizeSnippet))
@@ -57,7 +77,7 @@ export async function fetchAllSnippets() {
   const { data, error } = await client.from('snippets').select('*')
 
   if (error) {
-    throw error
+    throw toSnippetServiceError(error)
   }
 
   return sortSnippetsByNewest((data ?? []).map(normalizeSnippet))
@@ -72,7 +92,7 @@ export async function fetchSnippet(snippetId) {
     .maybeSingle()
 
   if (error) {
-    throw error
+    throw toSnippetServiceError(error)
   }
 
   return data ? normalizeSnippet(data) : null
@@ -97,7 +117,7 @@ export async function createSnippet({ title, language, code }) {
 
   if (error) {
     console.log(error)
-    throw error
+    throw toSnippetServiceError(error)
   }
 
   return normalizeSnippet(data)
@@ -112,7 +132,7 @@ export async function upvoteSnippet(snippetId) {
     .single()
 
   if (currentError) {
-    throw currentError
+    throw toSnippetServiceError(currentError)
   }
 
   const nextUpvotes = Number(currentSnippet?.upvotes ?? 0) + 1
@@ -124,7 +144,7 @@ export async function upvoteSnippet(snippetId) {
     .single()
 
   if (error) {
-    throw error
+    throw toSnippetServiceError(error)
   }
 
   return normalizeSnippet(data)
