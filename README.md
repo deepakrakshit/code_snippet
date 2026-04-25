@@ -68,7 +68,9 @@ Think **GitHub Gist** met **Product Hunt** and they had a fast, beautiful baby.
 │   ⚡  REALTIME FEED       Snippets update live via Supabase      │
 │   🎨  SYNTAX HIGHLIGHT    100+ languages with Prism.js           │
 │   🤖  AI CODE EXPLAIN     Summary + complexity + suggestions      │
+│   💬  AI ASSISTANT        Product-specific usage guidance         │
 │   🖥️  LIVE PREVIEW        HTML/CSS/JS rendered instantly          │
+│   🔎  EXPLORE PAGE        All snippets + instant search filters   │
 │   📸  EXPORT IMAGE        Download styled snippet cards as PNG    │
 │   👍  UPVOTE SYSTEM       Spam-protected. One vote per snippet.  │
 │   🔗  INSTANT SHARING     Unique URL generated on every submit   │
@@ -129,6 +131,7 @@ snipvault/
 │   ├── 📁 pages/                # Route-level page components
 │   │   ├── CreatePage.jsx       # Snippet creation form
 │   │   ├── HomePage.jsx         # Live feed sorted by upvotes
+│   │   ├── ExplorePage.jsx      # Full vault with search
 │   │   └── SnippetPage.jsx      # Full snippet + upvote view
 │   │
 │   ├── 📁 services/
@@ -143,6 +146,9 @@ snipvault/
 │   ├── App.jsx                  # Router config
 │   ├── index.css                # Tailwind base
 │   └── main.jsx                 # App entry point
+│
+├── 📁 api/
+│   └── ai.js                    # Groq server endpoint
 │
 ├── 📁 supabase/
 │   ├── schema.sql               # Table definitions + RLS
@@ -212,11 +218,10 @@ cp .env.example .env.local
 ```env
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-public-anon-key
-VITE_OPENROUTER_API_KEY=your-openrouter-api-key
-VITE_OPENROUTER_MODEL=openai/gpt-4o-mini
+GROQ_API_KEY=your-groq-api-key
 ```
 
-`VITE_OPENROUTER_API_KEY` is required for AI Code Explain. If it is missing, the app still runs and only the explain action is disabled with a friendly message.
+`GROQ_API_KEY` powers the AI assistant and code explain features. If it is missing, the app still runs and only AI actions show a friendly error.
 
 > **No Supabase yet?** Just skip this step. SnipVault runs in **local demo mode** automatically — full UI, no backend needed.
 
@@ -242,7 +247,7 @@ Open the URL Vite prints. You're live. 🚀
 3.  Framework preset  →  Vite
 4.  Build command     →  npm run build
 5.  Output dir        →  dist
-6.  Add env vars      →  VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY + VITE_OPENROUTER_API_KEY (+ optional VITE_OPENROUTER_MODEL)
+6.  Add env vars      →  VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY + GROQ_API_KEY
 7.  Hit Deploy
 ```
 

@@ -33,7 +33,19 @@ function AppLayout() {
                 }`
               }
             >
-              Vault
+              Top
+            </NavLink>
+            <NavLink
+              to="/vault"
+              className={({ isActive }) =>
+                `hidden rounded-lg px-3 py-2 text-sm font-semibold transition sm:inline-flex ${
+                  isActive
+                    ? 'bg-vault-panel-2 text-vault-text'
+                    : 'text-vault-muted hover:bg-vault-panel hover:text-vault-text'
+                }`
+              }
+            >
+              Explore
             </NavLink>
             <NavLink
               to="/create"

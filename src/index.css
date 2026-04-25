@@ -84,6 +84,26 @@ textarea {
   box-shadow: 0 24px 80px rgba(1, 4, 9, 0.42);
 }
 
+.ai-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.96)),
+    #161b22;
+  border: 1px solid rgba(48, 54, 61, 0.9);
+  box-shadow:
+    0 24px 80px rgba(1, 4, 9, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.ai-panel::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, rgba(57, 208, 255, 0.9), rgba(0, 255, 136, 0.85), transparent 80%);
+}
+
 .export-capture-surface {
   background:
     radial-gradient(circle at 8% 4%, rgba(57, 208, 255, 0.08), transparent 42%),

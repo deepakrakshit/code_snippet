@@ -136,6 +136,7 @@ function SnippetPage() {
         title: snippet.title,
         language: snippet.language,
         code: snippet.code,
+        context: 'Snippet detail page explain action',
       })
       setExplainResult(result)
     } catch (nextError) {

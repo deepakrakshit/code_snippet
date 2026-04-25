@@ -1,29 +1,29 @@
-const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
-const OPENROUTER_MODEL =
-  import.meta.env.VITE_OPENROUTER_MODEL ?? 'openai/gpt-4o-mini'
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY
+const AI_ENDPOINT = '/api/ai'
 
-function parseJsonValue(text) {
-  if (!text || typeof text !== 'string') {
-    return null
-  }
+async function requestAi(payload) {
+  let response
 
   try {
-    return JSON.parse(text)
+    response = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
   } catch {
-    const firstCurly = text.indexOf('{')
-    const lastCurly = text.lastIndexOf('}')
-
-    if (firstCurly === -1 || lastCurly === -1 || firstCurly >= lastCurly) {
-      return null
-    }
-
-    try {
-      return JSON.parse(text.slice(firstCurly, lastCurly + 1))
-    } catch {
-      return null
-    }
+    throw new Error(
+      'AI service is unreachable. For local usage, run through Vercel dev with GROQ_API_KEY configured.',
+    )
   }
+
+  const body = await response.json().catch(() => ({}))
+
+  if (!response.ok) {
+    throw new Error(body?.error ?? 'AI request failed.')
+  }
+
+  return body
 }
 
 function normalizeSuggestions(value) {
@@ -53,69 +53,43 @@ function normalizeResult(value) {
   }
 }
 
-export async function explainCode({ code, language, title }) {
-  if (!OPENROUTER_API_KEY) {
-    throw new Error(
-      'AI explain is not configured. Add VITE_OPENROUTER_API_KEY to your environment.',
-    )
+export async function explainCode({ code, language, title, context }) {
+  if (!String(code ?? '').trim()) {
+    throw new Error('Code is required for explanation.')
   }
 
-  const response = await fetch(OPENROUTER_API_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': window.location.origin,
-      'X-Title': 'SnipVault',
-    },
-    body: JSON.stringify({
-      model: OPENROUTER_MODEL,
-      temperature: 0.2,
-      response_format: { type: 'json_object' },
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You explain code for developers. Always return valid JSON with keys: explanation, complexity, suggestions. suggestions must be an array of 1 to 5 concise strings.',
-        },
-        {
-          role: 'user',
-          content: [
-            `Snippet title: ${title ?? 'Untitled snippet'}`,
-            `Language: ${language}`,
-            'Return:',
-            '1) explanation in plain English (2 to 5 sentences)',
-            '2) time complexity if applicable, else "Not applicable"',
-            '3) practical improvements',
-            '',
-            code,
-          ].join('\n'),
-        },
-      ],
-    }),
+  const body = await requestAi({
+    action: 'explain',
+    code,
+    language,
+    title,
+    context,
   })
 
-  if (!response.ok) {
-    try {
-      const body = await response.json()
-      throw new Error(body?.error?.message ?? 'AI request failed.')
-    } catch {
-      throw new Error('AI request failed.')
-    }
-  }
-
-  const body = await response.json()
-  const content = body?.choices?.[0]?.message?.content
-
-  if (!content) {
+  if (!body?.result) {
     throw new Error('AI did not return an explanation.')
   }
 
-  const parsed = parseJsonValue(content)
+  return normalizeResult(body.result)
+}
 
-  if (!parsed) {
-    return normalizeResult({ explanation: content })
+export async function askSnipVaultAssistant(question) {
+  const trimmed = String(question ?? '').trim()
+
+  if (!trimmed) {
+    throw new Error('Please add a question for the assistant.')
   }
 
-  return normalizeResult(parsed)
+  const body = await requestAi({
+    action: 'assistant',
+    question: trimmed,
+  })
+
+  const answer = String(body?.answer ?? '').trim()
+
+  if (!answer) {
+    throw new Error('Assistant response was empty.')
+  }
+
+  return answer
 }
