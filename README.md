@@ -1,336 +1,185 @@
 <div align="center">
 
-<!-- ANIMATED BANNER -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00FF88,100:00b4d8&height=200&section=header&text=SnipVault&fontSize=80&fontColor=0d1117&fontAlignY=38&desc=Code%20snippets.%20Shared.%20Instantly.&descAlignY=60&descSize=20&descColor=0d1117&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00ff88,50:00c2ff,100:0f172a&text=SNIPVAULT&fontSize=72&fontColor=0b1020&fontAlignY=38&desc=Realtime%20Snippet%20Platform%20for%20Developers&descAlignY=60&descSize=18&animation=fadeIn" width="100%" />
 
-<!-- LOGO / HERO -->
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=20&duration=2600&pause=900&center=true&vCenter=true&repeat=true&width=900&lines=Built+for+Code+Sprint+2.0+at+NIET+College;AI+Explain+%7C+AI+Assistant+%7C+Live+Preview+%7C+Export+PNG;Supabase+Realtime+%2B+Groq+Llama-3.3-70B+Versatile)](https://github.com/deepakrakshit/code_snippet)
 
-```
-███████╗███╗   ██╗██╗██████╗ ██╗   ██╗ █████╗ ██╗   ██╗██╗  ████████╗
-██╔════╝████╗  ██║██║██╔══██╗██║   ██║██╔══██╗██║   ██║██║  ╚══██╔══╝
-███████╗██╔██╗ ██║██║██████╔╝██║   ██║███████║██║   ██║██║     ██║   
-╚════██║██║╚██╗██║██║██╔═══╝ ╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   
-███████║██║ ╚████║██║██║      ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   
-╚══════╝╚═╝  ╚═══╝╚═╝╚═╝       ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝   
-```
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=0b1020)
+![Vite](https://img.shields.io/badge/Vite-8-7C3AED?style=for-the-badge&logo=vite&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=062b1d)
+![Groq](https://img.shields.io/badge/Groq-llama--3.3--70b--versatile-0f172a?style=for-the-badge)
+![Vercel](https://img.shields.io/badge/Deployment-Vercel-111111?style=for-the-badge&logo=vercel&logoColor=white)
 
-<br/>
-
-> **Share code. Get upvoted. Build in public.**  
-> A blazing-fast, production-grade snippet sharing platform — syntax highlighted, realtime, and beautiful.
-
-<br/>
-
-<!-- BADGES ROW 1 -->
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel&logoColor=white)
-
-<!-- BADGES ROW 2 -->
-![License](https://img.shields.io/badge/License-MIT-00FF88?style=for-the-badge)
-![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-ff69b4?style=for-the-badge)
-![Made with Love](https://img.shields.io/badge/Made%20with-Love%20%26%20Caffeine-red?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-00FF88?style=for-the-badge)
-
-<br/>
-
-[![⚡ Live Demo](https://img.shields.io/badge/⚡%20LIVE%20DEMO-Try%20it%20Now-00FF88?style=for-the-badge)](https://snipvault.vercel.app)
-[![⭐ Star this repo](https://img.shields.io/github/stars/deepakrakshit/snipvault?style=for-the-badge&color=yellow)](https://github.com/deepakrakshit/snipvault)
+[![Live App](https://img.shields.io/badge/LIVE-Open%20SnipVault-00ff88?style=for-the-badge)](https://snipvault-44l4oiaws-deepakrakshits-projects.vercel.app)
+[![Repository](https://img.shields.io/badge/GitHub-code__snippet-181717?style=for-the-badge&logo=github)](https://github.com/deepakrakshit/code_snippet)
 
 </div>
 
 ---
 
-<div align="center">
+## For Judges
 
-## ✦ What is SnipVault?
+This project was built as our working prototype for **CODE SPRINT 2.0 hosted at NIET College**.
+The problem statement asked us to build a practical, developer-centric platform, and we delivered **SnipVault**: a realtime snippet sharing app with AI tools and production deployment.
 
-</div>
+### Team
 
-**SnipVault** is not just another paste site.  
-It's a developer-first, realtime code sharing platform where your snippets get the spotlight they deserve — with gorgeous syntax highlighting across 100+ languages, live upvote feeds powered by Supabase Realtime, and a shareable link ready the moment you hit submit.
-
-Think **GitHub Gist** met **Product Hunt** and they had a fast, beautiful baby.
-
----
-
-<div align="center">
-
-## ✦ Feature Showcase
-
-</div>
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                   │
-│   ⚡  REALTIME FEED       Snippets update live via Supabase      │
-│   🎨  SYNTAX HIGHLIGHT    100+ languages with Prism.js           │
-│   🤖  AI CODE EXPLAIN     Summary + complexity + suggestions      │
-│   💬  AI ASSISTANT        Product-specific usage guidance         │
-│   🖥️  LIVE PREVIEW        HTML/CSS/JS rendered instantly          │
-│   🔎  EXPLORE PAGE        All snippets + instant search filters   │
-│   📸  EXPORT IMAGE        Download styled snippet cards as PNG    │
-│   👍  UPVOTE SYSTEM       Spam-protected. One vote per snippet.  │
-│   🔗  INSTANT SHARING     Unique URL generated on every submit   │
-│   📋  COPY TO CLIPBOARD   One click. Done.                       │
-│   🌙  DARK NATIVE UI      Because every dev lives in the dark    │
-│   🔌  DEMO MODE           Works offline, no Supabase needed      │
-│   📱  FULLY RESPONSIVE    Desktop to mobile, flawless            │
-│                                                                   │
-└─────────────────────────────────────────────────────────────────┘
-```
+- Deepak Rakshit: [https://github.com/deepakrakshit](https://github.com/deepakrakshit)
+- Aryan Verma: [https://github.com/AryanVerma-cell](https://github.com/AryanVerma-cell)
+- Samar Singh: [https://github.com/singhsamar-24](https://github.com/singhsamar-24)
+- Shaswat Srivastav: [https://github.com/SHASWAT-SRIVASTAV](https://github.com/SHASWAT-SRIVASTAV)
 
 ---
 
-<div align="center">
+## Project Snapshot
 
-## ✦ Tech Stack
+SnipVault is a full-stack code snippet platform where users can:
 
-</div>
-
-| Layer | Technology | Purpose |
-|---|---|---|
-| ⚛️ **Frontend** | React 18 + Vite 5 | Blazing fast UI & dev server |
-| 💅 **Styling** | Tailwind CSS | Utility-first, zero runtime CSS |
-| 🗄️ **Backend** | Supabase (Postgres) | Database + Auth + Realtime |
-| 🔴 **Realtime** | Supabase Realtime | Live upvote & feed updates |
-| 🎨 **Highlighting** | Prism.js | Syntax highlighting, 100+ langs |
-| 🔀 **Routing** | React Router v6 | SPA navigation |
-| 🚀 **Deployment** | Vercel | Edge-deployed, global CDN |
-| 🛡️ **Spam Guard** | localStorage voting | One vote per device per snippet |
+- Create and share snippet links instantly
+- Browse a live feed and an explore vault with search
+- Upvote snippets with realtime updates across devices
+- Use AI for code explanation and assistant-style guidance
+- Run live previews for HTML/CSS/JavaScript snippets
+- Export snippet cards as PNG images
 
 ---
 
-<div align="center">
+## Key Features
 
-## ✦ Project Structure
+| Feature | Description |
+|---|---|
+| Realtime Snippet Feed | Backed by Supabase Realtime subscriptions |
+| Explore Vault | Dedicated page with search by title, language, and id |
+| AI Code Explain | Structured explanation, complexity, and improvements |
+| AI Assistant | Prompt-based coding assistant integrated into app |
+| Live Preview | Inline iframe rendering for HTML/CSS/JavaScript |
+| Export as Image | Snippet card export as PNG via html2canvas |
+| Device-wide Data | Supabase is the source of truth (no snippet local fallback) |
 
-</div>
+---
+
+## Tech Stack
+
+| Layer | Tech |
+|---|---|
+| Frontend | React + Vite + React Router |
+| UI | Tailwind CSS + Lucide icons |
+| Syntax Highlighting | Prism-based rendering |
+| Backend Data | Supabase Postgres + Realtime |
+| AI Runtime | Groq API (`llama-3.3-70b-versatile`) via server endpoint |
+| Deployment | Vercel |
+
+---
+
+## Architecture Notes
+
+- Client-side data access is centralized in `src/services/snippetService.js`.
+- AI calls are proxied through `api/ai.js` so secrets stay server-side.
+- Live preview documents are built in `src/utils/livePreview.js`.
+- Export generation is implemented on `src/pages/SnippetPage.jsx`.
+
+---
+
+## Database Setup (Supabase)
+
+Run these scripts in the **same Supabase project** referenced by `VITE_SUPABASE_URL`.
+
+1. `supabase/schema.sql`
+2. `supabase/sample-data.sql` (optional seed)
+
+### Expected table fields in `public.snippets`
+
+- `id` (text)
+- `title` (text)
+- `language` (text)
+- `code` (text)
+- `upvotes` (integer)
+- `createdAt` (timestamptz)
+
+Compatibility note: The app also safely handles `created_at` if your table uses snake_case.
+
+---
+
+## Local Development
 
 ```bash
-snipvault/
-│
-├── 📁 public/
-│   └── favicon.svg
-│
-├── 📁 src/
-│   ├── 📁 components/          # Reusable UI building blocks
-│   │   ├── AppLayout.jsx        # Global layout wrapper
-│   │   ├── SnippetCard.jsx      # Feed card component
-│   │   ├── StatusMessage.jsx    # Loading / error states
-│   │   └── SyntaxBlock.jsx      # Prism-powered code renderer
-│   │
-│   ├── 📁 data/
-│   │   └── languages.js         # Supported language registry
-│   │
-│   ├── 📁 lib/
-│   │   └── supabase.js          # Supabase client init
-│   │
-│   ├── 📁 pages/                # Route-level page components
-│   │   ├── AiToolsPage.jsx      # AI assistant + paste-to-explain tools
-│   │   ├── CreatePage.jsx       # Snippet creation form
-│   │   ├── HomePage.jsx         # Live feed sorted by upvotes
-│   │   ├── ExplorePage.jsx      # Full vault with search
-│   │   └── SnippetPage.jsx      # Full snippet + upvote view
-│   │
-│   ├── 📁 services/
-│   │   ├── aiExplainService.js  # AI explain API integration
-│   │   └── snippetService.js    # All DB queries in one place
-│   │
-│   ├── 📁 utils/
-│   │   ├── format.js            # Date, string helpers
-│   │   ├── livePreview.js       # iframe preview document builder
-│   │   └── votes.js             # Vote tracking logic
-│   │
-│   ├── App.jsx                  # Router config
-│   ├── index.css                # Tailwind base
-│   └── main.jsx                 # App entry point
-│
-├── 📁 api/
-│   └── ai.js                    # Groq server endpoint
-│
-├── 📁 supabase/
-│   ├── schema.sql               # Table definitions + RLS
-│   └── sample-data.sql          # Seed data for testing
-│
-├── .env.example                 # Environment variable template
-├── vercel.json                  # SPA fallback routing fix
-├── package.json
-└── vite.config.js
-```
-
----
-
-<div align="center">
-
-## ✦ Database Schema
-
-</div>
-
-```sql
--- Every snippet lives here
-CREATE TABLE snippets (
-  id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  title       TEXT        NOT NULL,
-  language    TEXT        NOT NULL,
-  code        TEXT        NOT NULL,
-  upvotes     INTEGER     NOT NULL DEFAULT 0,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- Realtime enabled on this table
-ALTER PUBLICATION supabase_realtime ADD TABLE public.snippets;
-```
-
----
-
-<div align="center">
-
-## ✦ Quick Start
-
-</div>
-
-### 1 · Clone & Install
-
-```bash
-git clone https://github.com/deepakrakshit/snipvault.git
-cd snipvault
+git clone https://github.com/deepakrakshit/code_snippet.git
+cd code_snippet
 npm install
 ```
 
-### 2 · Set Up Supabase
-
-```bash
-# Create your project at https://supabase.com
-# Then run these in the SQL editor — in order:
-
-supabase/schema.sql        # Creates the snippets table
-supabase/sample-data.sql   # Seeds test snippets
-```
-
-### 3 · Configure Environment
-
-```bash
-cp .env.example .env.local
-```
+Create `.env.local`:
 
 ```env
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your-public-anon-key
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-or-publishable-key
 GROQ_API_KEY=your-groq-api-key
 ```
 
-`GROQ_API_KEY` powers the AI assistant and code explain features. If it is missing, the app still runs and only AI actions show a friendly error.
-
-> **No Supabase yet?** Just skip this step. SnipVault runs in **local demo mode** automatically — full UI, no backend needed.
-
-### 4 · Run Locally
+Run app:
 
 ```bash
 npm run dev
 ```
 
-Open the URL Vite prints. You're live. 🚀
+---
+
+## Deployment (Vercel)
+
+1. Push repository to GitHub
+2. Import project in Vercel
+3. Configure env vars for **Development**, **Preview**, and **Production**:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `GROQ_API_KEY`
+4. Build command: `npm run build`
+5. Output directory: `dist`
+
+`vercel.json` is already configured for SPA route rewrites.
 
 ---
 
-<div align="center">
+## Scripts
 
-## ✦ Deploy to Vercel
-
-</div>
-
-```
-1.  Push to GitHub
-2.  Import project at vercel.com/new
-3.  Framework preset  →  Vite
-4.  Build command     →  npm run build
-5.  Output dir        →  dist
-6.  Add env vars      →  VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY + GROQ_API_KEY
-7.  Hit Deploy
-```
-
-> `vercel.json` is already configured so `/snippet/:id` routes don't 404 after page refresh.
-
----
-
-<div align="center">
-
-## ✦ Available Scripts
-
-</div>
-
-| Command | Action |
+| Command | Purpose |
 |---|---|
-| `npm run dev` | Start local dev server |
-| `npm run build` | Production build → `dist/` |
+| `npm run dev` | Start development server |
+| `npm run build` | Build production bundle |
 | `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint across the project |
+| `npm run lint` | Run ESLint |
+
+---
+
+## Status and Roadmap
+
+### Implemented
+
+- Realtime snippet sync
+- AI explain and AI assistant tools
+- Explore page with search
+- Live preview for web snippets
+- PNG export for snippet cards
+- Supabase-only snippet persistence
+
+### Next
+
+- User profiles and authentication
+- Comments and collaboration layer
+- Better snippet tagging and filtering
+- Public API/read-only embed cards
+
+---
+
+## License
+
+MIT
 
 ---
 
 <div align="center">
 
-## ✦ Roadmap
+<img src="https://capsule-render.vercel.app/api?type=waving&height=140&color=0:0f172a,40:00c2ff,100:00ff88&section=footer&animation=twinkling" width="100%" />
 
-</div>
-
-```
- ✅  Realtime upvote feed
- ✅  Syntax highlighting — 100+ languages
- ✅  Shareable snippet URLs
- ✅  Copy code + copy link
- ✅  Spam-protected voting
- ✅  Local demo mode
- ✅  Vercel SPA routing fix
-
- 🔲  User auth + profiles (Supabase Auth)
- 🔲  Snippet search + tag filtering
- 🔲  Comments on snippets
- 🔲  Markdown description field
- 🔲  GitHub import — paste a gist URL
- 🔲  Embed widget (iframe-ready snippet view)
- 🔲  Dark/light theme toggle
-```
-
----
-
-<div align="center">
-
-## ✦ Contributing
-
-</div>
-
-Pull requests are welcome. For major changes, open an issue first to discuss what you'd like to change.
-
-```bash
-# Standard fork → branch → PR flow
-git checkout -b feature/your-feature-name
-git commit -m "feat: describe your change"
-git push origin feature/your-feature-name
-```
-
----
-
-<div align="center">
-
-## ✦ License
-
-</div>
-
-<div align="center">
-
-MIT © [Deepak Rakshit](https://github.com/deepakrakshit)  
-Built with purpose. Deployed with pride.
-
-<br/>
-
----
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00b4d8,100:00FF88&height=120&section=footer&animation=fadeIn" width="100%"/>
-
-*If this saved you time, drop a ⭐ — it means more than you think.*
+Built for CODE SPRINT 2.0 at NIET College by Team SnipVault.
 
 </div>
